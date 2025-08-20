@@ -1,0 +1,25 @@
+create table users (
+    id int primary key auto_increment,
+    name nvarchar(100) not null,
+    email nvarchar(100) unique not null,
+    password nvarchar(255) not null
+);
+
+create table emails (
+    id int primary key auto_increment,
+    code char(6) unique not null,
+    sender_id int not null,
+    subject nvarchar(255) not null,
+    body text not null,
+    sent_at datetime default current_timestamp,
+    foreign key (sender_id) references users(id)
+);
+
+create table recipients (
+    email_id int not null,
+    recipient_id int not null,
+    is_read boolean default false,
+    primary key (email_id, recipient_id),
+    foreign key (email_id) references emails(id),
+    foreign key (recipient_id) references users(id)
+);
