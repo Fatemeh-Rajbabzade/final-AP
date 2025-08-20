@@ -1,4 +1,4 @@
-package aut.ap.usersSerrvice;
+package aut.ap.service;
 
 import aut.ap.model.User;
 import aut.ap.util.HibernateUtil;
@@ -10,7 +10,7 @@ public class UserService {
 
     public boolean signUp(String name, String email, String password) {
         if (password.length() < 8) {
-            System.out.println("Password must be at least 8 characters!!");
+            System.out.println("❌ Password must be at least 8 characters.");
             return false;
         }
 
@@ -20,7 +20,7 @@ public class UserService {
             Query<User> query = session.createQuery("FROM User WHERE email = :email", User.class);
             query.setParameter("email", email);
             if (!query.list().isEmpty()) {
-                System.out.println("Email already exists.");
+                System.out.println("❌ Email already exists.");
                 tx.rollback();
                 return false;
             }
