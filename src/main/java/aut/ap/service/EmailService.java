@@ -88,9 +88,6 @@ public class EmailService {
         }
     }
 
-    // -----------------------------
-    // 📩 متد جدید: پاسخ به ایمیل
-    // -----------------------------
     public String replyEmail(String originalCode, String replier, String body) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Email original = session.createQuery(
@@ -100,19 +97,16 @@ public class EmailService {
 
             if (original == null) return null;
 
-            // گیرنده‌ها: فرستنده + همه دریافت‌کننده‌های اصلی
             String recipients = original.getSender() + ", " + original.getRecipients();
 
-            // موضوع: [Re] Subject
+
             String subject = "[Re] " + original.getSubject();
 
             return sendEmail(replier, recipients, subject, body);
         }
     }
 
-    // -----------------------------
-    // 📤 متد جدید: فوروارد ایمیل
-    // -----------------------------
+
     public String forwardEmail(String originalCode, String forwarder, String recipients) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Email original = session.createQuery(
@@ -122,7 +116,7 @@ public class EmailService {
 
             if (original == null) return null;
 
-            // موضوع: [Fw] Subject
+
             String subject = "[Fw] " + original.getSubject();
 
             // همون بدنه ایمیل اصلی
