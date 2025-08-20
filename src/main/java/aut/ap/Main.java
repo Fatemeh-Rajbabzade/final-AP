@@ -19,7 +19,7 @@ public class Main {
             String cmd = sc.nextLine().trim().toLowerCase();
 
             if (cmd.equals("q")) {
-                System.out.println("👋 Bye!");
+                System.out.println("Bye!");
                 break;
             }
 
@@ -35,15 +35,15 @@ public class Main {
                 String password = sc.nextLine();
 
                 if (password.length() < 8) {
-                    System.out.println("❌ Password must be at least 8 characters!");
+                    System.out.println("Password must be at least 8 characters!");
                     continue;
                 }
 
                 if (userService.signUp(name, email, password)) {
-                    System.out.println("✅ Your new account is created.");
+                    System.out.println("Your new account is created.");
                     System.out.println("Go ahead and login!");
                 } else {
-                    System.out.println("❌ Email already exists.");
+                    System.out.println("Email already exists.");
                 }
 
             } else if (cmd.equals("l") || cmd.equals("login")) {
@@ -57,14 +57,14 @@ public class Main {
                 loggedInUser = userService.login(email, password);
                 if (loggedInUser != null) {
                     String username = loggedInUser.getEmail().split("@")[0];
-                    System.out.println("✨ Welcome back, " + username + "!");
+                    System.out.println("Welcome back, " + username + "!");
 
                     while (true) {
                         System.out.print("[S]end, [V]iew, [R]eply, [F]orward, [L]ogout: ");
                         String action = sc.nextLine().trim().toLowerCase();
 
                         if (action.equals("l")) {
-                            System.out.println("👋 Logged out.");
+                            System.out.println("Logged out.");
                             loggedInUser = null;
                             break;
                         }
@@ -72,7 +72,7 @@ public class Main {
                         if (action.equals("s")) {
                             System.out.print("Recipient(s): ");
                             String recipients = sc.nextLine();
-                            if (!recipients.contains("@")) recipients += "@milou.com"; // 🔑 اصلاح شد
+                            if (!recipients.contains("@")) recipients += "@milou.com";
 
                             System.out.print("Subject: ");
                             String subject = sc.nextLine();
@@ -83,7 +83,7 @@ public class Main {
                             String code = emailService.sendEmail(
                                     loggedInUser.getEmail(), recipients, subject, body);
 
-                            System.out.println("✅ Successfully sent your email.");
+                            System.out.println("Successfully sent your email.");
                             System.out.println("Code: " + code);
 
                         } else if (action.equals("v")) {
@@ -92,7 +92,7 @@ public class Main {
 
                             switch (viewChoice) {
                                 case "a":
-                                    System.out.println("📩 All Emails:");
+                                    System.out.println("All Emails:");
                                     emailService.getAllEmails(loggedInUser.getEmail())
                                             .forEach(e -> System.out.println("+ " + e.getSender() + " - " + e.getSubject() + " (" + e.getCode() + ")"));
                                     break;
@@ -104,7 +104,7 @@ public class Main {
                                     break;
 
                                 case "s":
-                                    System.out.println("📤 Sent Emails:");
+                                    System.out.println("Sent Emails:");
                                     emailService.getSentEmails(loggedInUser.getEmail())
                                             .forEach(e -> System.out.println("+ " + e.getRecipients() + " - " + e.getSubject() + " (" + e.getCode() + ")"));
                                     break;
@@ -116,17 +116,17 @@ public class Main {
                                     if (emailObj != null) {
                                         if (emailObj.getSender().equals(loggedInUser.getEmail())
                                                 || emailObj.getRecipients().contains(loggedInUser.getEmail())) {
-                                            System.out.println("📧 Code: " + emailObj.getCode());
+                                            System.out.println("Code: " + emailObj.getCode());
                                             System.out.println("Recipient(s): " + emailObj.getRecipients());
                                             System.out.println("Subject: " + emailObj.getSubject());
                                             System.out.println("Date: " + emailObj.getSentAt());
                                             System.out.println("\n" + emailObj.getBody());
                                             emailService.markAsRead(code);
                                         } else {
-                                            System.out.println("❌ You cannot read this email.");
+                                            System.out.println("You cannot read this email.");
                                         }
                                     } else {
-                                        System.out.println("❌ Email not found.");
+                                        System.out.println("Email not found.");
                                     }
                                     break;
                             }
@@ -140,10 +140,10 @@ public class Main {
 
                             String replyCode = emailService.replyEmail(code, loggedInUser.getEmail(), body);
                             if (replyCode != null) {
-                                System.out.println("✅ Successfully sent your reply to email " + code + ".");
+                                System.out.println("Successfully sent your reply to email " + code + ".");
                                 System.out.println("Code: " + replyCode);
                             } else {
-                                System.out.println("❌ Original email not found.");
+                                System.out.println("Original email not found.");
                             }
 
                         } else if (action.equals("f")) {
@@ -152,19 +152,19 @@ public class Main {
 
                             System.out.print("Recipient(s): ");
                             String recipients = sc.nextLine();
-                            if (!recipients.contains("@")) recipients += "@milou.com"; // 🔑 اصلاح شد
+                            if (!recipients.contains("@")) recipients += "@milou.com";
 
                             String forwardCode = emailService.forwardEmail(code, loggedInUser.getEmail(), recipients);
                             if (forwardCode != null) {
-                                System.out.println("✅ Successfully forwarded your email.");
+                                System.out.println("Successfully forwarded your email.");
                                 System.out.println("Code: " + forwardCode);
                             } else {
-                                System.out.println("❌ Original email not found.");
+                                System.out.println("Original email not found.");
                             }
                         }
                     }
                 } else {
-                    System.out.println("❌ Invalid email or password.");
+                    System.out.println("Invalid email or password.");
                 }
             }
         }
