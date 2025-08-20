@@ -9,30 +9,33 @@ public class Email {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @Column(unique = true, nullable = false)
-    private String code;  // کد ۶ حرفی
+    @Column(nullable = false, unique = true)
+    private String code; // کد ۶ حرفی
 
+    @Column(nullable = false)
     private String sender;
 
-    private String recipients;  // اگر چندتا باشن با کاما جدا می‌شن
+    @Column(nullable = false)
+    private String recipients; // چند گیرنده با کاما
 
+    @Column(nullable = false)
     private String subject;
 
-    @Column(length = 2000) // برای متن بلندتر
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
-    @Column(name = "sent_at")
+    @Column(name = "sent_at", nullable = false)
     private LocalDateTime sentAt;
 
-    @Column(name = "is_read")
+    @Column(name = "is_read", nullable = false)
     private boolean isRead = false;
 
-    // ⚡ سازنده خالی (لازم برای Hibernate)
-    public Email() {}
+    // ===== سازنده‌ها =====
+    public Email() {
+    }
 
-    // ⚡ سازنده کامل (برای استفاده موقع ارسال ایمیل)
     public Email(String code, String sender, String recipients, String subject, String body) {
         this.code = code;
         this.sender = sender;
@@ -40,15 +43,26 @@ public class Email {
         this.subject = subject;
         this.body = body;
         this.sentAt = LocalDateTime.now();
-        this.isRead = false;
     }
 
-    // --- Getters & Setters ---
-    public int getId() {
+    public Email(Integer id, String code, String sender, String recipients, String subject, String body,
+                 LocalDateTime sentAt, boolean isRead) {
+        this.id = id;
+        this.code = code;
+        this.sender = sender;
+        this.recipients = recipients;
+        this.subject = subject;
+        this.body = body;
+        this.sentAt = sentAt;
+        this.isRead = isRead;
+    }
+
+    // ===== getter / setter ها =====
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) { // معمولاً لازم نیست ولی به درخواست شما گذاشته شد
         this.id = id;
     }
 
@@ -106,5 +120,18 @@ public class Email {
 
     public void setRead(boolean read) {
         isRead = read;
+    }
+
+    @Override
+    public String toString() {
+        return "Email{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", sender='" + sender + '\'' +
+                ", recipients='" + recipients + '\'' +
+                ", subject='" + subject + '\'' +
+                ", sentAt=" + sentAt +
+                ", isRead=" + isRead +
+                '}';
     }
 }

@@ -1,46 +1,59 @@
-package aut.ap.usersSerrvice;
+package aut.ap.service;
 
 import aut.ap.model.User;
 import aut.ap.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 public class UserService {
 
+    // ✨ متد نرمال‌سازی ایمیل کاربر
+    private String normalizeEmail(String email) {
+        email = email.trim();
+        if (!email.contains("@")) {
+            email += "@milou.com";
+        }
+        return email.toLowerCase(); // برای جلوگیری از حساسیت به حروف
+    }
+
+    // 🆕 ثبت‌نام
     public boolean signUp(String name, String email, String password) {
+        email = normalizeEmail(email);
+
         if (password.length() < 8) {
-            System.out.println("Password must be at least 8 characters!!");
+            System.out.println("❌ Password must be at least 8 characters!");
             return false;
         }
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
-
-            Query<User> query = session.createQuery("FROM User WHERE email = :email", User.class);
-            query.setParameter("email", email);
-            if (!query.list().isEmpty()) {
-                System.out.println("Email already exists.");
-                tx.rollback();
+            if (session.createQuery("from User u where u.email = :email", User.class)
+                    .setParameter("email", email)
+                    .uniqueResult() != null) {
+                System.out.println("❌ Email already exists.");
                 return false;
             }
 
-            User user = new User(name, email, password);
+            Transaction tx = session.beginTransaction();
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(password);
             session.persist(user);
-
             tx.commit();
             return true;
         }
     }
 
+    // 🔑 ورود
     public User login(String email, String password) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query = session.createQuery(
-                    "FROM User WHERE email = :email AND password = :password", User.class);
-            query.setParameter("email", email);
-            query.setParameter("password", password);
+        email = normalizeEmail(email);
 
-            return query.uniqueResult();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "from User u where u.email = :email and u.password = :password", User.class
+                    ).setParameter("email", email)
+                    .setParameter("password", password)
+                    .uniqueResult();
         }
     }
 }
