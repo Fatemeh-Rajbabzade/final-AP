@@ -37,7 +37,7 @@ MySQL (پایگاه داده)
 
 Maven (مدیریت وابستگی‌ها)
 
-⚙️ راه‌اندازی پروژه
+راه‌اندازی پروژه
 1. ساخت دیتابیس
 
 در MySQL:
@@ -67,13 +67,13 @@ Go ahead and login!
 [L]ogin, [S]ign up, [Q]uit: l
 Email: tara
 Password: 12345678
-✨ Welcome back, tara!
+Welcome back, tara!
 
 [S]end, [V]iew, [R]eply, [F]orward, [L]ogout: s
 Recipient(s): morad@milou.com
 Subject: hi
 Body: are you ok?
-✅ Successfully sent your email.
+ Successfully sent your email.
 Code: a1b2c3
 
 ساختار پوشه‌ها
