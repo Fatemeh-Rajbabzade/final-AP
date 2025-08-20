@@ -1,4 +1,4 @@
-package aut.ap.usersSerrvice;
+package aut.ap.service;
 
 import aut.ap.model.User;
 import aut.ap.util.HibernateUtil;
