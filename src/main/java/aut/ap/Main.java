@@ -4,7 +4,6 @@ import aut.ap.model.Email;
 import aut.ap.model.User;
 import aut.ap.service.EmailService;
 import aut.ap.service.UserService;
-
 import java.util.Scanner;
 
 public class Main {
@@ -30,7 +29,7 @@ public class Main {
                 String password = sc.nextLine();
 
                 if (userService.signUp(name, email, password)) {
-                    System.out.println("✅ Your new account is created.");
+                    System.out.println("Your new account is created.");
                     System.out.println("Go ahead and login!");
                 }
 
@@ -45,7 +44,7 @@ public class Main {
                 loggedInUser = userService.login(email, password);
                 if (loggedInUser != null) {
                     String username = loggedInUser.getEmail().split("@")[0];
-                    System.out.println("✨ Welcome back, " + username + "!");
+                    System.out.println("Welcome back, " + username + "!");
 
                     // دستورات بعد از ورود
                     while (true) {
@@ -69,7 +68,7 @@ public class Main {
                                     body
                             );
 
-                            System.out.println("✅ Successfully sent your email.");
+                            System.out.println("Successfully sent your email.");
                             System.out.println("Code: " + code);
 
                         } else if (action.equals("v")) { // نمایش ایمیل‌ها
@@ -110,10 +109,10 @@ public class Main {
                                             System.out.println("\n" + emailObj.getBody());
                                             emailService.markAsRead(code);
                                         } else {
-                                            System.out.println("❌ You cannot read this email.");
+                                            System.out.println("You cannot read this email.");
                                         }
                                     } else {
-                                        System.out.println("❌ Email not found.");
+                                        System.out.println("Email not found.");
                                     }
                                     break;
                             }
@@ -127,10 +126,10 @@ public class Main {
 
                             String replyCode = emailService.replyEmail(code, loggedInUser.getEmail(), body);
                             if (replyCode != null) {
-                                System.out.println("✅ Successfully sent your reply to email " + code + ".");
+                                System.out.println("Successfully sent your reply to email " + code + ".");
                                 System.out.println("Code: " + replyCode);
                             } else {
-                                System.out.println("❌ Original email not found.");
+                                System.out.println("Original email not found.");
                             }
 
                         } else if (action.equals("f")) { // فوروارد
@@ -142,14 +141,14 @@ public class Main {
 
                             String forwardCode = emailService.forwardEmail(code, loggedInUser.getEmail(), recipients);
                             if (forwardCode != null) {
-                                System.out.println("✅ Successfully forwarded your email.");
+                                System.out.println("Successfully forwarded your email.");
                                 System.out.println("Code: " + forwardCode);
                             } else {
-                                System.out.println("❌ Original email not found.");
+                                System.out.println("Original email not found.");
                             }
 
                         } else {
-                            System.out.println("⚠️ Invalid action.");
+                            System.out.println("Invalid action.");
                         }
                     }
                 } else {
